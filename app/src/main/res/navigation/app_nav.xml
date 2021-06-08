@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/fragment_splash_screen">
+
+  <fragment
+      android:id="@+id/fragment_splash_screen"
+      android:name="com.gmjacobs.productions.benfordslaw.SplashScreenFragment"
+      tools:layout="@layout/fragment_splash_screen">
+    <action
+        android:id="@+id/splashscreen_fragment"
+        app:destination="@id/integer_entry_fragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/integer_entry_fragment"
+      android:name="com.gmjacobs.productions.benfordslaw.IntegerEntryFragment"
+      tools:layout="@layout/fragment_integer_entry">
+    <action
+        android:id="@+id/action_integer_entry_fragment_to_result_fragment"
+        app:destination="@id/result_fragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/result_fragment"
+      android:name="com.gmjacobs.productions.benfordslaw.ResultFragment"
+      android:label="fragment_result"
+      tools:layout="@layout/fragment_result" >
+    <action
+        android:id="@+id/action_result_fragment_to_integer_entry_fragment"
+        app:destination="@id/integer_entry_fragment" />
+  </fragment>
+</navigation>
