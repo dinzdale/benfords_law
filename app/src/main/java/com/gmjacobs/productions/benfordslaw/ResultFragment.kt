@@ -28,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class ResultFragment : Fragment() {
 
-    private val benfordTable = listOf(.301, .176, .125, .097, .079, .067, .058, .051, .046)
+    private val benfordTable = listOf(.301f, .176f, .125f, .097f, .079f, .067f, .058f, .051f, .046f)
 
     lateinit var integer_set_tv: TextView
     lateinit var result_list: RecyclerView
@@ -83,15 +83,27 @@ class ResultFragment : Fragment() {
 
         occurrenceList.forEachIndexed { index, nxtSum ->
             if (nxtSum > 0) {
-                val percentage = (nxtSum.toFloat() / list.size) * 100
-                val df = DecimalFormat("#.###")
-                df.roundingMode = RoundingMode.CEILING
-                resultList.add(BenfordLawResult(index + 1, nxtSum, df.format(percentage)))
+                val percentage = nxtSum.toFloat() / list.size
+                val percentageS = getRoundedPercentage(percentage)
+                resultList.add(
+                    BenfordLawResult(
+                        index + 1,
+                        nxtSum,
+                        percentageS,
+                        matchWithinTolerance(percentageS.toFloat(), benfordTable[index])
+                    )
+                )
             } else {
                 resultList.add(BenfordLawResult(index + 1))
             }
         }
         return resultList
+    }
+
+    fun getRoundedPercentage(percentage: Float): String {
+        val df = DecimalFormat("#.###")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(percentage)
     }
 
     fun getFirstDigit(nxtInt: Int): Int {
@@ -101,6 +113,13 @@ class ResultFragment : Fragment() {
         }
         return result
     }
+
+    fun matchWithinTolerance(
+        percentage: Float, matchingPercentage: Float, tolerance: Float = 0.05f
+    ): Boolean {
+        return percentage <= getRoundedPercentage(matchingPercentage + tolerance).toFloat() && percentage >= getRoundedPercentage(matchingPercentage - tolerance).toFloat()
+    }
+
 
     companion object {
         /**
@@ -162,10 +181,10 @@ class BenfordLawListAdapter(val context: Context, val list: List<BenfordLawResul
             }
 
         } else {
-            holder.digit.text = list[position-1].digit.toString()
-            holder.occurrences.text = list[position-1].occurrences.toString()
-            holder.percentage.text = list[position-1].occurPercentage.toString()
-            holder.match.text = list[position-1].benfordLaw.toString()
+            holder.digit.text = list[position - 1].digit.toString()
+            holder.occurrences.text = list[position - 1].occurrences.toString()
+            holder.percentage.text = list[position - 1].occurPercentage.toString()
+            holder.match.text = list[position - 1].benfordLaw.toString()
         }
     }
 
