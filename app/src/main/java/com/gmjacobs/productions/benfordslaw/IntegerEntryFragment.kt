@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -73,8 +74,15 @@ class IntegerEntryFragment : Fragment() {
                 setOnClickListener {
                     if (::newIntTV.isInitialized && ::viewModel.isInitialized) {
                         val newInt = newIntTV.text.toString()
-                        // validate text
-                        viewModel.addIntegerToSet(newInt.toInt())
+                        if (isValidInteger(newInt)) {
+                            viewModel.addIntegerToSet(newInt.toInt())
+                        }
+                        else {
+                            AlertDialog.Builder(requireContext())
+                                .setMessage("$newInt is not a valid integer, please try again")
+                                .setPositiveButton(android.R.string.ok,null)
+                                .show()
+                        }
                         newIntTV.text?.clear()
                     }
                 }
@@ -87,6 +95,11 @@ class IntegerEntryFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun isValidInteger(number: String): Boolean {
+        val regex = "[1-9]+".toRegex()
+        return regex.matches(number)
     }
 
     companion object {
