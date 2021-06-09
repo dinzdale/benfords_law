@@ -11,7 +11,7 @@
         android:id="@+id/integer_set_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="TextView"
@@ -24,12 +24,35 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/result_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/integer_set_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/integer_set_tv"></androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/result_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Integer set follows Bendford's Law:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/result_list"
+        app:layout_constraintTop_toBottomOf="@id/result_list" />
+
+    <TextView
+        android:id="@+id/result_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/result_label"
+        app:layout_constraintTop_toTopOf="@+id/result_label" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

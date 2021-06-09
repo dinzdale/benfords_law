@@ -33,6 +33,7 @@ class ResultFragment : Fragment() {
     lateinit var integer_set_tv: TextView
     lateinit var result_list: RecyclerView
     lateinit var viewModel: DataViewModel
+    lateinit var result_status: TextView
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -56,6 +57,7 @@ class ResultFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_benfords_law_result, container, false)?.apply {
             integer_set_tv = findViewById(R.id.integer_set_tv)
             result_list = findViewById<RecyclerView>(R.id.result_list)
+            result_status = findViewById<TextView>(R.id.result_status)
             val layout = LinearLayoutManager(requireContext())
             layout.orientation = LinearLayoutManager.VERTICAL
             result_list.layoutManager = layout
@@ -68,7 +70,17 @@ class ResultFragment : Fragment() {
                     }
                 }
                 integer_set_tv.text = sb.toString()
-                result_list.adapter = BenfordLawListAdapter(requireContext(), evaluateSet(it))
+                val evaluatedSet = evaluateSet(it)
+                result_list.adapter = BenfordLawListAdapter(requireContext(), evaluatedSet)
+                findViewById<TextView>(R.id.result_status)?.apply {
+                    text = evaluatedSet.filter {
+                        it.occurrences > 0
+                    }.let {
+                        it.filter {
+                            it.benfordLaw == false
+                        }.size == 0
+                    }.toString()
+                }
             }
         }
     }
@@ -117,7 +129,9 @@ class ResultFragment : Fragment() {
     fun matchWithinTolerance(
         percentage: Float, matchingPercentage: Float, tolerance: Float = 0.05f
     ): Boolean {
-        return percentage <= getRoundedPercentage(matchingPercentage + tolerance).toFloat() && percentage >= getRoundedPercentage(matchingPercentage - tolerance).toFloat()
+        return percentage <= getRoundedPercentage(matchingPercentage + tolerance).toFloat() && percentage >= getRoundedPercentage(
+            matchingPercentage - tolerance
+        ).toFloat()
     }
 
 
