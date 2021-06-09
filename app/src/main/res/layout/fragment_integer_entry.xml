@@ -23,8 +23,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/integer_entry"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:text="256" />
+            android:layout_height="wrap_content"/>
 
         <Space
             android:layout_width="20dp"
