@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import com.gmjacobs.productions.benfordslaw.model.DataViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -28,6 +30,7 @@ class IntegerEntryFragment : Fragment() {
 
     lateinit var viewModel: DataViewModel
     lateinit var newIntTV: TextInputEditText
+    lateinit var integerSetTV: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +41,28 @@ class IntegerEntryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_integer_entry, container, false)?.apply {
 
             newIntTV = findViewById(R.id.integer_entry)
+            integerSetTV = findViewById(R.id.integer_set)
 
+            viewModel.integerSet.observe(viewLifecycleOwner) { list ->
+
+                val sb = StringBuilder()
+                list.forEachIndexed { index, nxtInt ->
+                    sb.append(nxtInt)
+                    if (index < list.lastIndex) {
+                        sb.append(",")
+                    }
+                }
+                if (::integerSetTV.isInitialized) {
+                    integerSetTV.text = sb.toString()
+                }
+
+            }
             findViewById<Button>(R.id.result_btn)?.apply {
                 setOnClickListener {
                     findNavController().navigate(R.id.result_fragment)
@@ -57,6 +75,7 @@ class IntegerEntryFragment : Fragment() {
                         val newInt = newIntTV.text.toString()
                         // validate text
                         viewModel.addIntegerToSet(newInt.toInt())
+                        newIntTV.text?.clear()
                     }
                 }
             }
@@ -64,6 +83,7 @@ class IntegerEntryFragment : Fragment() {
             findViewById<Button>(R.id.clear_btn)?.apply {
                 setOnClickListener {
                     viewModel.clearIntegerSet()
+                    newIntTV.text?.clear()
                 }
             }
         }

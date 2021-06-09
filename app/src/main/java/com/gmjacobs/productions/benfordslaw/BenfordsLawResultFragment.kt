@@ -1,10 +1,10 @@
 package com.gmjacobs.productions.benfordslaw
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,6 +17,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class BenfordsLawResultFragment : Fragment() {
+
+
+    private val benfordTable = listOf(.301, .176, .125, .097, .079, .067, .058, .051, .046)
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -37,6 +41,33 @@ class BenfordsLawResultFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_benfords_law_result, container, false)
     }
 
+
+    fun evaluateSet(list: List<Int>): List<BenfordLawResult> {
+        val resultList = arrayListOf<BenfordLawResult>()
+        val occurrenceList = arrayListOf<Int>(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        list.forEach { nxtInt ->
+            val digit = getFirstDigit(nxtInt)
+            occurrenceList[digit]++
+        }
+
+        occurrenceList.forEachIndexed { index, nxtSum ->
+            if (nxtSum > 0) {
+                resultList.add(BenfordLawResult(index, nxtSum, nxtSum.toFloat() / list.size))
+            } else {
+                resultList.add(BenfordLawResult(index))
+            }
+        }
+        return resultList
+    }
+
+    fun getFirstDigit(nxtInt: Int): Int {
+        var result = nxtInt
+        while (result > 9) {
+            result /= 10
+        }
+        return result
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -55,5 +86,13 @@ class BenfordsLawResultFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }
+
+data class BenfordLawResult(
+    val digit: Int,
+    val occurrences: Int = 0,
+    val occurPercentage: Float = 0.0f,
+    val benfordLaw: Boolean = false
+)
