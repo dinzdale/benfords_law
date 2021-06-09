@@ -16,16 +16,6 @@ import com.gmjacobs.productions.benfordslaw.model.DataViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ResultFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ResultFragment : Fragment() {
 
     private val benfordTable = listOf(.301f, .176f, .125f, .097f, .079f, .067f, .058f, .051f, .046f)
@@ -41,10 +31,6 @@ class ResultFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -147,12 +133,7 @@ class ResultFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ResultFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+            ResultFragment()
     }
 }
 
@@ -177,6 +158,7 @@ class BenfordLawListAdapter(val context: Context, val list: List<BenfordLawResul
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position == 0) {
+            // render header
             holder.digit.apply {
                 text = "DIGIT"
                 typeface = Typeface.DEFAULT_BOLD
@@ -195,6 +177,7 @@ class BenfordLawListAdapter(val context: Context, val list: List<BenfordLawResul
             }
 
         } else {
+            // render data
             holder.digit.text = list[position - 1].digit.toString()
             holder.occurrences.text = list[position - 1].occurrences.toString()
             holder.percentage.text = list[position - 1].occurPercentage.toString()
