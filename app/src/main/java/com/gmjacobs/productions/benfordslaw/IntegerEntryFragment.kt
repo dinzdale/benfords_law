@@ -55,7 +55,7 @@ class IntegerEntryFragment : Fragment() {
                 list.forEachIndexed { index, nxtInt ->
                     sb.append(nxtInt)
                     if (index < list.lastIndex) {
-                        sb.append(",")
+                        sb.append(",  ")
                     }
                 }
                 if (::integerSetTV.isInitialized) {

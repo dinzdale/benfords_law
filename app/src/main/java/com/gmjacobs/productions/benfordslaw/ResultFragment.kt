@@ -1,6 +1,7 @@
 package com.gmjacobs.productions.benfordslaw
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gmjacobs.productions.benfordslaw.model.DataViewModel
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,10 +61,10 @@ class ResultFragment : Fragment() {
             result_list.layoutManager = layout
             viewModel.integerSet.observe(viewLifecycleOwner) {
                 val sb = StringBuffer()
-                it.forEachIndexed { index, nxtInt->
+                it.forEachIndexed { index, nxtInt ->
                     sb.append(nxtInt.toString())
                     if (index < it.lastIndex) {
-                        sb.append(",")
+                        sb.append(",  ")
                     }
                 }
                 integer_set_tv.text = sb.toString()
@@ -75,14 +78,17 @@ class ResultFragment : Fragment() {
         val occurrenceList = arrayListOf<Int>(0, 0, 0, 0, 0, 0, 0, 0, 0)
         list.forEach { nxtInt ->
             val digit = getFirstDigit(nxtInt)
-            occurrenceList[digit-1]++
+            occurrenceList[digit - 1]++
         }
 
         occurrenceList.forEachIndexed { index, nxtSum ->
             if (nxtSum > 0) {
-                resultList.add(BenfordLawResult(index+1, nxtSum, nxtSum.toFloat() / list.size))
+                val percentage = (nxtSum.toFloat() / list.size) * 100
+                val df = DecimalFormat("#.###")
+                df.roundingMode = RoundingMode.CEILING
+                resultList.add(BenfordLawResult(index + 1, nxtSum, df.format(percentage)))
             } else {
-                resultList.add(BenfordLawResult(index+1))
+                resultList.add(BenfordLawResult(index + 1))
             }
         }
         return resultList
@@ -120,7 +126,7 @@ class ResultFragment : Fragment() {
 data class BenfordLawResult(
     val digit: Int,
     val occurrences: Int = 0,
-    val occurPercentage: Float = 0.0f,
+    val occurPercentage: String = "0",
     val benfordLaw: Boolean = false
 )
 
@@ -133,14 +139,34 @@ class BenfordLawListAdapter(val context: Context, val list: List<BenfordLawResul
         )
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = list.size + 1
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.digit.text = list[position].digit.toString()
-        holder.occurrences.text = list[position].occurrences.toString()
-        holder.percentage.text = list[position].occurPercentage.toString()
-        holder.match.text = list[position].benfordLaw.toString()
+        if (position == 0) {
+            holder.digit.apply {
+                text = "DIGIT"
+                typeface = Typeface.DEFAULT_BOLD
+            }
+            holder.occurrences.apply {
+                text = "OCCUR"
+                typeface = Typeface.DEFAULT_BOLD
+            }
+            holder.percentage.apply {
+                text = "%"
+                typeface = Typeface.DEFAULT_BOLD
+            }
+            holder.match.apply {
+                text = "MATCHES"
+                typeface = Typeface.DEFAULT_BOLD
+            }
+
+        } else {
+            holder.digit.text = list[position-1].digit.toString()
+            holder.occurrences.text = list[position-1].occurrences.toString()
+            holder.percentage.text = list[position-1].occurPercentage.toString()
+            holder.match.text = list[position-1].benfordLaw.toString()
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
