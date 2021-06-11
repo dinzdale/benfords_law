@@ -172,7 +172,7 @@ class BenfordLawListAdapter(val context: Context, val list: List<BenfordLawResul
                 typeface = Typeface.DEFAULT_BOLD
             }
             holder.match.apply {
-                text = "MATCHES"
+                text = "MATCH"
                 typeface = Typeface.DEFAULT_BOLD
             }
 
