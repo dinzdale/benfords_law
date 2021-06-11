@@ -96,7 +96,7 @@ class IntegerEntryFragment : Fragment() {
     }
 
     fun isValidInteger(number: String): Boolean {
-        val regex = "[1-9]+".toRegex()
+        val regex = "[1-9][0-9]+".toRegex()
         return regex.matches(number)
     }
 
