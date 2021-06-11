@@ -54,7 +54,17 @@ class IntegerEntryFragment : Fragment() {
             }
             findViewById<Button>(R.id.result_btn)?.apply {
                 setOnClickListener {
-                    findNavController().navigate(R.id.result_fragment)
+                    viewModel.integerSet.value?.apply {
+                        if (isNotEmpty()) {
+                            findNavController().navigate(R.id.result_fragment)
+                        }
+                        else {
+                            AlertDialog.Builder(requireContext())
+                                .setMessage("Please enter at lease one integer to the set.")
+                                .setPositiveButton(android.R.string.ok,null)
+                                .show()
+                        }
+                    }
                 }
             }
 
@@ -67,7 +77,7 @@ class IntegerEntryFragment : Fragment() {
                         }
                         else {
                             AlertDialog.Builder(requireContext())
-                                .setMessage("$newInt is not a valid integer, please try again")
+                                .setMessage("\"$newInt\" is not a valid integer, please try again")
                                 .setPositiveButton(android.R.string.ok,null)
                                 .show()
                         }

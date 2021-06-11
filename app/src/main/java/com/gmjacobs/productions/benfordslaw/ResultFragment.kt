@@ -39,7 +39,6 @@ class ResultFragment : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_benfords_law_result, container, false)?.apply {
             integer_set_tv = findViewById(R.id.integer_set_tv)
             result_list = findViewById<RecyclerView>(R.id.result_list)
@@ -47,6 +46,7 @@ class ResultFragment : Fragment() {
             val layout = LinearLayoutManager(requireContext())
             layout.orientation = LinearLayoutManager.VERTICAL
             result_list.layoutManager = layout
+
             viewModel.integerSet.observe(viewLifecycleOwner) {
                 val sb = StringBuffer()
                 it.forEachIndexed { index, nxtInt ->
