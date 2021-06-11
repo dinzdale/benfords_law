@@ -77,7 +77,7 @@ class IntegerEntryFragment : Fragment() {
                         }
                         else {
                             AlertDialog.Builder(requireContext())
-                                .setMessage("\"$newInt\" is not a valid integer, please try again")
+                                .setMessage("\"$newInt\" is not a valid integer, please try again.")
                                 .setPositiveButton(android.R.string.ok,null)
                                 .show()
                         }
